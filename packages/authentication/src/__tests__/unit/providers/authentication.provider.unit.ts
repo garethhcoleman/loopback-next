@@ -117,6 +117,7 @@ describe('AuthenticateActionProvider', () => {
       provider = new AuthenticateActionProvider(
         () => Promise.resolve(strategy),
         u => (currentUser = u),
+        <Context>{},
       );
       currentUser = undefined;
     }

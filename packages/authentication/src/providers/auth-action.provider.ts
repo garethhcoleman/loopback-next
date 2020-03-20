@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Getter, inject, Provider, Setter} from '@loopback/context';
-import {Request} from '@loopback/rest';
+import {Getter, inject, Provider, Setter, Context} from '@loopback/context';
+import {Request, RedirectRoute} from '@loopback/rest';
 import {SecurityBindings, UserProfile} from '@loopback/security';
 import {AuthenticationBindings} from '../keys';
 import {
@@ -29,6 +29,7 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
     readonly getStrategy: Getter<AuthenticationStrategy>,
     @inject.setter(SecurityBindings.USER)
     readonly setCurrentUser: Setter<UserProfile>,
+    @inject.context() private ctx: Context,
   ) {}
 
   /**
@@ -49,8 +50,26 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
       return undefined;
     }
 
-    const userProfile = await strategy.authenticate(request);
-    if (!userProfile) {
+    const authResponse = await strategy.authenticate(request);
+    let userProfile: UserProfile;
+
+    // response from `strategy.authenticate()` could return an object of type UserProfile or RedirectRoute
+    if (RedirectRoute.isRedirectRoute(authResponse)) {
+      const redirectOptions = authResponse;
+      // bind redirection url and status as 'authentication.oauth2.redirectUrl' to context
+      // controller should handle actual redirection
+      this.ctx
+        .bind('authentication.redirect.url')
+        .to(redirectOptions.targetLocation);
+      this.ctx
+        .bind('authentication.redirect.status')
+        .to(redirectOptions.statusCode);
+    } else if (authResponse) {
+      // if `strategy.authenticate()` returns an object of type UserProfile, set it as current user
+      userProfile = authResponse as UserProfile;
+      this.setCurrentUser(userProfile);
+      return userProfile;
+    } else if (!authResponse) {
       // important to throw a non-protocol-specific error here
       const error = new Error(
         `User profile not returned from strategy's authenticate function`,
@@ -60,8 +79,5 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
       });
       throw error;
     }
-
-    this.setCurrentUser(userProfile);
-    return userProfile;
   }
 }

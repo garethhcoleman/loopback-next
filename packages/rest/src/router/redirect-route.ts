@@ -6,7 +6,11 @@
 import {OperationObject, SchemasObject} from '@loopback/openapi-v3';
 import {ResolvedRoute, RouteEntry} from '.';
 import {RequestContext} from '../request-context';
-import {OperationArgs, OperationRetval, PathParameterValues} from '../types';
+import {
+  OperationArgs,
+  OperationRetval,
+  PathParameterValues,
+} from '../types';
 
 export class RedirectRoute implements RouteEntry, ResolvedRoute {
   // ResolvedRoute API
@@ -23,9 +27,9 @@ export class RedirectRoute implements RouteEntry, ResolvedRoute {
   };
 
   constructor(
-    private readonly sourcePath: string,
-    private readonly targetLocation: string,
-    private readonly statusCode: number = 303,
+    public readonly sourcePath: string,
+    public readonly targetLocation: string,
+    public readonly statusCode: number = 303,
   ) {
     this.path = sourcePath;
   }
@@ -43,5 +47,22 @@ export class RedirectRoute implements RouteEntry, ResolvedRoute {
 
   describe(): string {
     return `RedirectRoute from "${this.sourcePath}" to "${this.targetLocation}"`;
+  }
+
+  /**
+   * type guard type checker for this class
+   * @param obj
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  static isRedirectRoute(obj: any): obj is RedirectRoute {
+    const redirectOptions = obj as RedirectRoute;
+    if (
+      redirectOptions?.targetLocation &&
+      redirectOptions.spec &&
+      redirectOptions.spec.description === 'LoopBack Redirect route'
+    ) {
+      return true;
+    }
+    return false;
   }
 }
