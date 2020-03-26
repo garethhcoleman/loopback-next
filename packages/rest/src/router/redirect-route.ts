@@ -6,11 +6,7 @@
 import {OperationObject, SchemasObject} from '@loopback/openapi-v3';
 import {ResolvedRoute, RouteEntry} from '.';
 import {RequestContext} from '../request-context';
-import {
-  OperationArgs,
-  OperationRetval,
-  PathParameterValues,
-} from '../types';
+import {OperationArgs, OperationRetval, PathParameterValues} from '../types';
 
 export class RedirectRoute implements RouteEntry, ResolvedRoute {
   // ResolvedRoute API

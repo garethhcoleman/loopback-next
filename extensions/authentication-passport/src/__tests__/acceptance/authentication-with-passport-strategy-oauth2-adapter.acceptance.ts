@@ -24,11 +24,7 @@ import {
   expect,
   supertest,
 } from '@loopback/testlab';
-import {
-  RestApplication,
-  RestBindings,
-  Response,
-} from '@loopback/rest';
+import {RestApplication, RestBindings, Response} from '@loopback/rest';
 import {
   startApp as startMockOauth2Server,
   stopApp as stopMockOauth2Server,
@@ -177,8 +173,8 @@ export class Oauth2Controller {
   // we have modeled this as a GET endpoint
   @get('/auth/thirdparty')
   // loginToThirdParty() is the handler for '/auth/thirdparty'
-  // this method is injected with 'x-loopback-authentication-redirect-url'
-  // the value for 'x-loopback-authentication-redirect-url' is set by the passport strategy adapter
+  // this method is injected with redirect url and status
+  // the value for 'authentication.redirect.url' is set by the authentication action provider
   loginToThirdParty(
     @inject('authentication.redirect.url')
     redirectUrl: string,
@@ -187,6 +183,8 @@ export class Oauth2Controller {
     @inject(RestBindings.Http.RESPONSE)
     response: Response,
   ) {
+    // controller handles redirect
+    // and returns response object to indicate response is already handled
     response.statusCode = status || 302;
     response.setHeader('Location', redirectUrl);
     response.end();

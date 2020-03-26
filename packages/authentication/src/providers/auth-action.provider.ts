@@ -59,10 +59,10 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
       // bind redirection url and status as 'authentication.oauth2.redirectUrl' to context
       // controller should handle actual redirection
       this.ctx
-        .bind('authentication.redirect.url')
+        .bind(AuthenticationBindings.AUTHENTICATION_REDIRECT_URL)
         .to(redirectOptions.targetLocation);
       this.ctx
-        .bind('authentication.redirect.status')
+        .bind(AuthenticationBindings.AUTHENTICATION_REDIRECT_STATUS)
         .to(redirectOptions.statusCode);
     } else if (authResponse) {
       // if `strategy.authenticate()` returns an object of type UserProfile, set it as current user
