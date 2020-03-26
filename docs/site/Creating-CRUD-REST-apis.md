@@ -10,16 +10,17 @@ summary:
 ---
 
 Starting with a [model class](Model.md) and [datasource](DataSources.md),
-LoopBack 4 allows you to easily use CRUD REST API. Using
-[`@loopback/rest-crud`](https://github.com/strongloop/loopback-next/tree/master/packages/rest-crud),
-a default CRUD repository and controller class without a custom class for
-either.
+LoopBack 4 allows you to easily use CRUD REST APIs by convention through
+[`@loopback/rest-crud`](https://github.com/strongloop/loopback-next/tree/master/packages/rest-crud).
+The package allows the application to use a default CRUD repository and
+controller class without creating a custom class for either.
 
 The
-[Todo example](https://github.com/strongloop/loopback-next/tree/master/examples/todo)
-was modified to use this package in the
-[rest-crud example](https://github.com/strongloop/loopback-next/tree/master/examples/rest-crud).
-To use the rest-crud example, use the following command:
+[`rest-crud` example](https://github.com/strongloop/loopback-next/tree/master/examples/rest-crud)
+is a simplified version of the
+[`Todo` example](https://github.com/strongloop/loopback-next/tree/master/examples/todo)
+that uses `@loopback/rest-crud`. To see the `rest-crud` example, use the
+following command:
 
 ```sh
 lb4 example rest-crud
@@ -105,7 +106,7 @@ lb4 rest-crud --datasource db --model Product
 
 You can also create it for multiple models at the same time. For more
 information on the command, see the
-[Rest Crud generator](Rest-Crud-generator.md)
+[Rest Crud generator](Rest-Crud-generator.md).
 
 This will generate a model configuration file and add the `CrudRestComponent` to
 the application file. For more details, see the following section,
