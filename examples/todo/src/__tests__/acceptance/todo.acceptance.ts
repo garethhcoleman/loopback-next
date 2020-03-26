@@ -65,6 +65,21 @@ describe('TodoApplication', () => {
     expect(result).to.containDeep(todo);
   });
 
+  it('creates a todo with arbitrary property', async function() {
+    // Set timeout to 30 seconds as `post /todos` triggers geocode look up
+    // over the internet and it takes more than 2 seconds
+    // eslint-disable-next-line no-invalid-this
+    this.timeout(30000);
+    const todo = givenTodo({arbitraryProp: {random: 'random'}});
+    const response = await client
+      .post('/todos')
+      .send(todo)
+      .expect(200);
+    expect(response.body).to.containDeep(todo);
+    const result = await todoRepo.findById(response.body.id);
+    expect(result).to.containDeep(todo);
+  });
+
   it('rejects requests to create a todo with no title', async () => {
     const todo = givenTodo();
     delete todo.title;

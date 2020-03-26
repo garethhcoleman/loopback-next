@@ -181,6 +181,10 @@ describe('build-schema', () => {
       });
     });
 
+    it('converts type any', () => {
+      expect(metaToJsonProperty({type: 'any'})).to.eql({});
+    });
+
     it('keeps description on property', () => {
       expect(metaToJsonProperty({type: String, description: 'test'})).to.eql({
         type: 'string',

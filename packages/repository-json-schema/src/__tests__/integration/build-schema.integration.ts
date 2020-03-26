@@ -191,9 +191,7 @@ describe('build-schema', () => {
 
         const jsonSchema = modelToJsonSchema(TestModel);
         expect(jsonSchema.properties).to.deepEqual({
-          anyProp: {
-            $ref: '#/definitions/AnyType',
-          },
+          anyProp: {},
         });
 
         expectValidJsonSchema(jsonSchema);

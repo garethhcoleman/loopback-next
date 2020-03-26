@@ -244,6 +244,8 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
     Object.assign(propDef, {
       type: resolvedType.name.toLowerCase(),
     });
+  } else if (resolvedType === AnyType) {
+    // no-op, the json schema for any type is {}
   } else {
     Object.assign(propDef, {$ref: `#/definitions/${resolvedType.name}`});
   }
