@@ -66,11 +66,7 @@ describe('TodoApplication', () => {
   });
 
   it('creates a todo with arbitrary property', async function() {
-    // Set timeout to 30 seconds as `post /todos` triggers geocode look up
-    // over the internet and it takes more than 2 seconds
-    // eslint-disable-next-line no-invalid-this
-    this.timeout(30000);
-    const todo = givenTodo({arbitraryProp: {random: 'random'}});
+    const todo = givenTodo({tag: {random: 'random'}});
     const response = await client
       .post('/todos')
       .send(todo)

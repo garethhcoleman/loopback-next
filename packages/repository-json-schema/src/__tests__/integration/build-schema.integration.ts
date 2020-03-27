@@ -5,7 +5,6 @@
 
 import {MetadataInspector} from '@loopback/context';
 import {
-  AnyType,
   belongsTo,
   Entity,
   hasMany,
@@ -186,7 +185,8 @@ describe('build-schema', () => {
           @property({
             type: 'any',
           })
-          anyProp: AnyType;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          anyProp: any;
         }
 
         const jsonSchema = modelToJsonSchema(TestModel);

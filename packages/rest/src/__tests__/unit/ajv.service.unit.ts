@@ -45,6 +45,7 @@ describe('Ajv service', () => {
     number: 123,
     object: {random: 'random'},
     array: [1, 2, 3],
+    null: null,
   };
 
   context('accepts any type', () => {

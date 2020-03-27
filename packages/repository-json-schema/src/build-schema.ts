@@ -4,15 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {MetadataInspector} from '@loopback/context';
-import {
-  AnyType,
-  isBuiltinType,
-  ModelDefinition,
-  ModelMetadataHelper,
-  PropertyDefinition,
-  RelationMetadata,
-  resolveType,
-} from '@loopback/repository';
+import {isBuiltinType, ModelDefinition, ModelMetadataHelper, PropertyDefinition, RelationMetadata, resolveType} from '@loopback/repository';
 import debugFactory from 'debug';
 import {JSONSchema6 as JSONSchema} from 'json-schema';
 import {inspect} from 'util';
@@ -182,7 +174,8 @@ export function stringTypeToWrapper(type: string | Function): Function {
       wrapper = Array;
       break;
     }
-    case 'object': {
+    case 'object':
+    case 'any': {
       wrapper = Object;
       break;
     }
@@ -192,10 +185,6 @@ export function stringTypeToWrapper(type: string | Function): Function {
     }
     case 'buffer': {
       wrapper = Buffer;
-      break;
-    }
-    case 'any': {
-      wrapper = AnyType;
       break;
     }
     default: {
@@ -240,12 +229,12 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
       type: 'string',
       format: 'date-time',
     });
+  } else if (propertyType === 'any') {
+    // no-op, the json schema for any type is {}
   } else if (isBuiltinType(resolvedType)) {
     Object.assign(propDef, {
       type: resolvedType.name.toLowerCase(),
     });
-  } else if (resolvedType === AnyType) {
-    // no-op, the json schema for any type is {}
   } else {
     Object.assign(propDef, {$ref: `#/definitions/${resolvedType.name}`});
   }
@@ -433,8 +422,8 @@ export function modelToJsonSchema<T extends object>(
     const resolvedType = resolveType(metaProperty.type) as string | Function;
     const referenceType = isArrayType(resolvedType)
       ? // shimks: ugly type casting; this should be replaced by logic to throw
-        // error if itemType/type is not a string or a function
-        resolveType(metaProperty.itemType as string | Function)
+      // error if itemType/type is not a string or a function
+      resolveType(metaProperty.itemType as string | Function)
       : resolvedType;
 
     if (typeof referenceType !== 'function' || isBuiltinType(referenceType)) {

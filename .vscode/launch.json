@@ -9,10 +9,7 @@
       "request": "launch",
       "name": "Run Mocha tests",
       "program": "${workspaceRoot}/packages/build/node_modules/mocha/bin/_mocha",
-      "runtimeArgs": [
-        "-r",
-        "${workspaceRoot}/packages/build/node_modules/source-map-support/register"
-      ],
+      "runtimeArgs": ["-r", "${workspaceRoot}/packages/build/node_modules/source-map-support/register"],
       "cwd": "${workspaceRoot}",
       "args": [
         "--config",
@@ -27,10 +24,7 @@
       "request": "launch",
       "name": "Debug Current Test File",
       "program": "${workspaceRoot}/bin/mocha-current-file",
-      "runtimeArgs": [
-        "-r",
-        "${workspaceRoot}/packages/build/node_modules/source-map-support/register"
-      ],
+      "runtimeArgs": ["-r", "${workspaceRoot}/packages/build/node_modules/source-map-support/register"],
       "cwd": "${workspaceRoot}",
       "args": [
         "--config",
